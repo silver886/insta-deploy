@@ -13,6 +13,7 @@ import { deployments, auditLog } from '../db/schema.js';
 import { CleanupService } from '../services/cleanup.service.js';
 import { ContainerService } from '../services/container.service.js';
 import { GitService } from '../services/git.service.js';
+import { PortService } from '../services/port.service.js';
 import { processDeployment, tunnelService, publishDeploymentLog } from '../workers/deploy.worker.js';
 import { deployRateLimitConfig } from '../middleware/rate-limit.js';
 import logger from '../lib/logger.js';
@@ -25,7 +26,8 @@ const deploymentsRoute: FastifyPluginAsync<DeploymentRouteOptions> = async (fast
   const { db } = opts;
   const containerService = new ContainerService();
   const gitService = new GitService();
-  const cleanupService = new CleanupService(db, containerService, tunnelService);
+  const portService = new PortService();
+  const cleanupService = new CleanupService(db, containerService, tunnelService, portService);
 
   function getSessionToken(request: { headers: Record<string, string | string[] | undefined>; query: Record<string, unknown> }): string | undefined {
     const headerToken = request.headers['x-session-token'];

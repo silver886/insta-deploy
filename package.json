@@ -1,0 +1,14 @@
+{
+  "name": "instadeploy",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "build:shared": "pnpm --filter @instadeploy/shared build",
+    "dev": "pnpm run build:shared && concurrently \"pnpm --filter @instadeploy/backend dev\" \"pnpm --filter @instadeploy/frontend dev\"",
+    "build": "pnpm --filter @instadeploy/shared build && pnpm --filter @instadeploy/backend build && pnpm --filter @instadeploy/frontend build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "typescript": "^5.7.0"
+  }
+}
